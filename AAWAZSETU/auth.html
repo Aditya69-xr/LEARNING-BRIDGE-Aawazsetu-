@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AawazSetu — Sign In | Powered by NEURONEXSIS</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700&family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#ff6b35',
+                        primaryDark: '#e55a2b',
+                        secondary: '#004e89',
+                        accent: '#ffc200',
+                        light: '#f8f9fa',
+                        dark: '#333333',
+                        grayLight: '#e2e8f0',
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                        hindi: ['Noto Sans Devanagari', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/languogo.css">
+    
+    <!-- Phosphor Icons for show/hide password -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-white min-h-screen flex items-center justify-center p-4 relative overflow-hidden font-sans text-dark">
+    <!-- Subtle Background Decoration -->
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none opacity-40">
+        <svg class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] text-blue-100 animate-slow-spin" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <path fill="currentColor" d="M44.7,-76.4C58.8,-69.2,71.8,-59.1,79.6,-45.8C87.4,-32.6,90,-16.3,87.6,-1.3C85.1,13.6,77.7,27.3,68.8,39.6C59.8,52,49.2,63.1,36.1,70.5C23.1,77.9,7.5,81.6,-7.3,80.1C-22.1,78.6,-36.2,71.9,-49.1,62.8C-62,53.8,-73.7,42.4,-81.4,28.3C-89.1,14.2,-92.9,-2.7,-88.9,-17.9C-84.9,-33.1,-73.1,-46.7,-60,-55.4C-46.9,-64.1,-32.4,-67.9,-18.8,-70.6C-5.1,-73.4,7.8,-75.1,21.5,-75.5C35.2,-75.9,49.8,-74.8,44.7,-76.4Z" transform="translate(100 100)" />
+        </svg>
+        <svg class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] text-blue-50 animate-slow-spin-reverse" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <path fill="currentColor" d="M51.5,-67.6C66,-57.2,76.6,-41.4,82.8,-24C88.9,-6.5,90.6,12.5,84.1,29.1C77.6,45.8,63,60,46,67.8C29.1,75.6,9.8,76.9,-7.7,73.5C-25.2,70,-40.8,61.8,-53.4,49.8C-65.9,37.8,-75.5,22.1,-79,-5C-82.5,-32.1,-79.8,-63,-64.1,-74.6C-48.4,-86.2,-19.7,-78.6,-0.3,-78.1C19.1,-77.7,37.1,-78,51.5,-67.6Z" transform="translate(100 100)" />
+        </svg>
+    </div>
+
+    <!-- Auth Card -->
+    <div class="auth-card bg-white w-full max-w-md rounded-3xl shadow-xl overflow-hidden border border-gray-100 z-10">
+        
+        <!-- Header -->
+        <div class="text-center pt-10 pb-6 px-8">
+            <div class="flex justify-center items-center gap-2 mb-2">
+                <span class="text-3xl">✨</span>
+                <h1 class="font-heading font-bold text-3xl text-secondary">
+                    AawazSetu <span class="font-hindi text-2xl font-semibold opacity-90">(आवाज़ सेतु)</span>
+                </h1>
+            </div>
+            <p class="text-xs font-semibold text-gray-500 uppercase tracking-widest mt-1">Powered by NEURONEXSIS</p>
+            <h2 class="text-xl font-medium mt-6 text-gray-800" id="formTitle">Welcome back</h2>
+            <p class="text-sm text-gray-500 mt-1" id="formSubtitle">Please enter your details to sign in.</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="flex border-b border-gray-200 relative mx-8 mb-6">
+            <button id="tabLogin" class="flex-1 py-3 text-sm font-semibold transition-colors duration-300 text-primary" onclick="switchTab('login')">Login</button>
+            <button id="tabSignup" class="flex-1 py-3 text-sm font-semibold transition-colors duration-300 text-gray-400 hover:text-gray-600" onclick="switchTab('signup')">Sign Up</button>
+            <div id="tabIndicator" class="absolute bottom-0 left-0 w-1/2 h-0.5 bg-primary transition-transform duration-300 ease-in-out"></div>
+        </div>
+
+        <!-- Forms Container -->
+        <div class="px-8 pb-8 relative overflow-hidden min-h-[300px]">
+            
+            <!-- Login Form -->
+            <form id="loginForm" class="form-section active transition-all duration-300 absolute w-full top-0 left-0 px-8">
+                <div class="space-y-5">
+                    <div class="input-group">
+                        <label for="loginEmail" class="block text-xs font-semibold text-gray-600 mb-1 ml-1">Email Address</label>
+                        <input type="email" id="loginEmail" class="w-full px-4 py-3 rounded-xl border border-grayLight bg-gray-50 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="you@example.com" autocomplete="email">
+                        <span class="error-msg text-xs text-red-500 ml-1 mt-1 hidden font-medium">Please enter a valid email.</span>
+                    </div>
+                    
+                    <div class="input-group relative">
+                        <label for="loginPassword" class="block text-xs font-semibold text-gray-600 mb-1 ml-1">Password</label>
+                        <div class="relative">
+                            <input type="password" id="loginPassword" class="w-full px-4 py-3 rounded-xl border border-grayLight bg-gray-50 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all pr-12" placeholder="••••••••" autocomplete="current-password">
+                            <button type="button" class="toggle-password absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none" onclick="togglePassword('loginPassword')">
+                                <i class="ph ph-eye text-xl"></i>
+                            </button>
+                        </div>
+                        <span class="error-msg text-xs text-red-500 ml-1 mt-1 hidden font-medium">Password is required.</span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between mt-2">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4 rounded text-primary focus:ring-primary/30 border-gray-300 cursor-pointer accent-primary">
+                            <span class="text-xs text-gray-600 font-medium">Remember me</span>
+                        </label>
+                        <a href="#" class="text-xs font-semibold text-primary hover:text-primaryDark transition-colors">Forgot password?</a>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full mt-8 bg-gradient-to-r from-primary to-primaryDark text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200">
+                    Sign In
+                </button>
+            </form>
+
+            <!-- Sign Up Form -->
+            <form id="signupForm" class="form-section translate-x-full opacity-0 pointer-events-none transition-all duration-300 absolute w-full top-0 left-0 px-8">
+                <div class="space-y-4">
+                    <div class="input-group">
+                        <label for="signupName" class="block text-xs font-semibold text-gray-600 mb-1 ml-1">Full Name</label>
+                        <input type="text" id="signupName" class="w-full px-4 py-2.5 rounded-xl border border-grayLight bg-gray-50 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="John Doe">
+                        <span class="error-msg text-xs text-red-500 ml-1 mt-1 hidden font-medium">Name must be at least 2 characters.</span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="signupEmail" class="block text-xs font-semibold text-gray-600 mb-1 ml-1">Email Address</label>
+                        <input type="email" id="signupEmail" class="w-full px-4 py-2.5 rounded-xl border border-grayLight bg-gray-50 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="you@example.com">
+                        <span class="error-msg text-xs text-red-500 ml-1 mt-1 hidden font-medium">Please enter a valid email.</span>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="signupAge" class="block text-xs font-semibold text-gray-600 mb-1 ml-1">Age</label>
+                        <input type="number" id="signupAge" class="w-full px-4 py-2.5 rounded-xl border border-grayLight bg-gray-50 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="25" min="5" max="100">
+                        <span class="error-msg text-xs text-red-500 ml-1 mt-1 hidden font-medium">Age must be between 5 and 100.</span>
+                    </div>
+                    
+                    <div class="input-group relative">
+                        <label for="signupPassword" class="block text-xs font-semibold text-gray-600 mb-1 ml-1">Password</label>
+                        <div class="relative">
+                            <input type="password" id="signupPassword" class="w-full px-4 py-2.5 rounded-xl border border-grayLight bg-gray-50 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all pr-12" placeholder="Min. 8 characters" onkeyup="checkPasswordStrength()">
+                            <button type="button" class="toggle-password absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none" onclick="togglePassword('signupPassword')">
+                                <i class="ph ph-eye text-xl"></i>
+                            </button>
+                        </div>
+                        <div class="flex gap-1 mt-1.5 px-1 h-1 w-full" id="strengthBar">
+                            <div class="h-full flex-1 rounded-full bg-gray-200 transition-colors"></div>
+                            <div class="h-full flex-1 rounded-full bg-gray-200 transition-colors"></div>
+                            <div class="h-full flex-1 rounded-full bg-gray-200 transition-colors"></div>
+                        </div>
+                        <p class="text-[10px] text-gray-500 ml-1 mt-1" id="strengthText">Password strength</p>
+                        <span class="error-msg text-xs text-red-500 ml-1 mt-1 hidden font-medium">Password must be at least 8 characters.</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full mt-6 bg-gradient-to-r from-primary to-primaryDark text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200">
+                    Create Account
+                </button>
+            </form>
+        </div>
+
+        <!-- Footer terms -->
+        <div class="bg-gray-50 py-4 px-8 border-t border-gray-100 text-center">
+            <p class="text-xs text-gray-500 leading-relaxed">
+                By continuing, you agree to NEURONEXSIS <a href="#" class="text-secondary hover:underline font-medium">Terms of Service</a> and <a href="#" class="text-secondary hover:underline font-medium">Privacy Policy</a>.
+            </p>
+        </div>
+    </div>
+    
+    <!-- Footer Credits -->
+    <div class="absolute bottom-6 w-full text-center pointer-events-none">
+        <p class="text-xs text-gray-400 font-medium">© 2026 NEURONEXSIS — Building Bridges Through Language</p>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-6 right-6 transform translate-x-full opacity-0 transition-all duration-300 bg-white border border-green-100 shadow-xl rounded-xl p-4 flex items-center gap-3 z-50">
+        <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+            <i class="ph ph-check-circle text-xl"></i>
+        </div>
+        <div>
+            <h4 class="text-sm font-bold text-gray-800" id="toastTitle">Success</h4>
+            <p class="text-xs text-gray-500 font-medium" id="toastMessage">Action completed successfully.</p>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/languogo.js"></script>
+</body>
+</html>
